@@ -1,0 +1,228 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(180deg,#dff6ff,#b8e5ff,#eefcff);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#05345d;
+}
+
+.container{
+    width:min(900px,95%);
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+h1{
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+#score{
+    font-size:1.25rem;
+    font-weight:bold;
+}
+
+/* ==========================
+   PATINOIRE
+========================== */
+
+#rink{
+    position:relative;
+    width:100%;
+    height:600px;
+    overflow:hidden;
+    border-radius:24px;
+    background:linear-gradient(180deg,#f9feff,#d8f3ff);
+    border:6px solid #9ddcff;
+    box-shadow:0 20px 45px rgba(0,70,130,.25);
+}
+
+/* Reflets sur la glace */
+.ice-reflection{
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            rgba(255,255,255,.10),
+            rgba(255,255,255,.10) 8px,
+            transparent 8px,
+            transparent 24px
+        );
+    pointer-events:none;
+}
+
+/* ==========================
+   JOUEUR
+========================== */
+
+#player{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:54px;
+    transition:left .08s linear, transform .15s;
+    user-select:none;
+    z-index:20;
+}
+
+.collect{
+    animation:pop .35s ease;
+}
+
+@keyframes pop{
+    0%{transform:translateX(-50%) scale(1);}
+    50%{transform:translateX(-50%) scale(1.35);}
+    100%{transform:translateX(-50%) scale(1);}
+}
+
+/* ==========================
+   FLOCONS
+========================== */
+
+.snowflake{
+    position:absolute;
+    font-size:30px;
+    user-select:none;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-40px) rotate(0deg);
+    }
+    to{
+        transform:translateY(700px) rotate(360deg);
+    }
+}
+
+/* ==========================
+   ÉCRAN DE VICTOIRE
+========================== */
+
+#victoryScreen{
+    position:absolute;
+    inset:0;
+    display:none;                 /* Caché par défaut */
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,30,70,.55);
+    backdrop-filter:blur(5px);
+    z-index:100;
+}
+
+/* Affichage lorsque JS ajoute la classe show */
+#victoryScreen.show{
+    display:flex;
+}
+
+.victoryBox{
+    background:#fff;
+    width:min(500px,90%);
+    padding:40px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    animation:bounce .8s ease;
+}
+
+@keyframes bounce{
+    0%{transform:scale(.4);}
+    70%{transform:scale(1.08);}
+    100%{transform:scale(1);}
+}
+
+.victoryBox h2{
+    font-size:2rem;
+    margin-bottom:20px;
+}
+
+.victoryBox p{
+    font-size:1.2rem;
+    line-height:1.5;
+    margin-bottom:30px;
+}
+
+/* ==========================
+   BOUTON
+========================== */
+
+button{
+    background:#0087ff;
+    color:#fff;
+    border:none;
+    padding:14px 34px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:1rem;
+    transition:.25s;
+}
+
+button:hover{
+    background:#0067c8;
+    transform:translateY(-2px);
+}
+
+button:active{
+    transform:translateY(1px);
+}
+
+/* ==========================
+   CONFETTIS
+========================== */
+
+.confetti{
+    position:absolute;
+    width:10px;
+    height:18px;
+    opacity:.9;
+    animation:confettiFall linear forwards;
+}
+
+@keyframes confettiFall{
+    from{
+        transform:translateY(-30px) rotate(0deg);
+    }
+    to{
+        transform:translateY(650px) rotate(720deg);
+    }
+}
+#instructions{
+
+    margin-top:15px;
+
+    padding:15px 20px;
+
+    background:rgba(255,255,255,0.65);
+
+    border-radius:15px;
+
+    text-align:center;
+
+    font-size:1rem;
+
+    color:#05345d;
+
+    box-shadow:0 5px 15px rgba(0,80,150,.15);
+
+    line-height:1.5;
+
+}
+
+#instructions strong{
+
+    color:#0077cc;
+
+}

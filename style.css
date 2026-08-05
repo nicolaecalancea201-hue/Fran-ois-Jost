@@ -1,228 +1,368 @@
-{
+/* ---------------------- */
+/* STYLE GÉNÉRAL */
+/* ---------------------- */
+
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:linear-gradient(180deg,#dff6ff,#b8e5ff,#eefcff);
+    background:linear-gradient(135deg,#4facfe,#00c6fb);
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:#05345d;
+    padding:30px;
 }
 
 .container{
-    width:min(900px,95%);
+    width:100%;
+    max-width:1000px;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
-header{
-    text-align:center;
-    margin-bottom:20px;
-}
+/* ---------------------- */
+/* TITRE */
+/* ---------------------- */
 
 h1{
-    font-size:2rem;
-    margin-bottom:10px;
-}
-
-#score{
-    font-size:1.25rem;
-    font-weight:bold;
-}
-
-/* ==========================
-   PATINOIRE
-========================== */
-
-#rink{
-    position:relative;
-    width:100%;
-    height:600px;
-    overflow:hidden;
-    border-radius:24px;
-    background:linear-gradient(180deg,#f9feff,#d8f3ff);
-    border:6px solid #9ddcff;
-    box-shadow:0 20px 45px rgba(0,70,130,.25);
-}
-
-/* Reflets sur la glace */
-.ice-reflection{
-    position:absolute;
-    inset:0;
-    background:
-        repeating-linear-gradient(
-            45deg,
-            rgba(255,255,255,.10),
-            rgba(255,255,255,.10) 8px,
-            transparent 8px,
-            transparent 24px
-        );
-    pointer-events:none;
-}
-
-/* ==========================
-   JOUEUR
-========================== */
-
-#player{
-    position:absolute;
-    bottom:18px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:54px;
-    transition:left .08s linear, transform .15s;
-    user-select:none;
-    z-index:20;
-}
-
-.collect{
-    animation:pop .35s ease;
-}
-
-@keyframes pop{
-    0%{transform:translateX(-50%) scale(1);}
-    50%{transform:translateX(-50%) scale(1.35);}
-    100%{transform:translateX(-50%) scale(1);}
-}
-
-/* ==========================
-   FLOCONS
-========================== */
-
-.snowflake{
-    position:absolute;
-    font-size:30px;
-    user-select:none;
-    animation:fall linear forwards;
-}
-
-@keyframes fall{
-    from{
-        transform:translateY(-40px) rotate(0deg);
-    }
-    to{
-        transform:translateY(700px) rotate(360deg);
-    }
-}
-
-/* ==========================
-   ÉCRAN DE VICTOIRE
-========================== */
-
-#victoryScreen{
-    position:absolute;
-    inset:0;
-    display:none;                 /* Caché par défaut */
-    justify-content:center;
-    align-items:center;
-    background:rgba(0,30,70,.55);
-    backdrop-filter:blur(5px);
-    z-index:100;
-}
-
-/* Affichage lorsque JS ajoute la classe show */
-#victoryScreen.show{
-    display:flex;
-}
-
-.victoryBox{
-    background:#fff;
-    width:min(500px,90%);
-    padding:40px;
-    border-radius:22px;
     text-align:center;
-    box-shadow:0 15px 40px rgba(0,0,0,.35);
-    animation:bounce .8s ease;
+    color:#0d4b8c;
+    margin-bottom:15px;
 }
 
-@keyframes bounce{
-    0%{transform:scale(.4);}
-    70%{transform:scale(1.08);}
-    100%{transform:scale(1);}
-}
-
-.victoryBox h2{
-    font-size:2rem;
-    margin-bottom:20px;
-}
-
-.victoryBox p{
-    font-size:1.2rem;
-    line-height:1.5;
+.description{
+    text-align:center;
+    line-height:1.6;
+    color:#555;
     margin-bottom:30px;
 }
 
-/* ==========================
-   BOUTON
-========================== */
+/* ---------------------- */
+/* RÈGLES */
+/* ---------------------- */
+
+.rules{
+    background:#eef8ff;
+    border-left:6px solid #2196f3;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+
+.rules h2{
+    margin-bottom:10px;
+    color:#0d4b8c;
+}
+
+.rules ul{
+    padding-left:25px;
+}
+
+.rules li{
+    margin:8px 0;
+}
+
+/* ---------------------- */
+/* INFOS */
+/* ---------------------- */
+
+.infos{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.info-box{
+    flex:1;
+    background:#f4f7fa;
+    padding:18px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.info-box h3{
+    margin-bottom:10px;
+    color:#0d4b8c;
+}
+
+.info-box span{
+    font-size:22px;
+    font-weight:bold;
+}
 
 button{
-    background:#0087ff;
-    color:#fff;
+    padding:12px 20px;
+    background:#0d6efd;
+    color:white;
     border:none;
-    padding:14px 34px;
-    border-radius:999px;
+    border-radius:10px;
     cursor:pointer;
-    font-size:1rem;
-    transition:.25s;
+    font-size:16px;
+    transition:.3s;
 }
 
 button:hover{
-    background:#0067c8;
-    transform:translateY(-2px);
+    background:#0a58ca;
+    transform:scale(1.05);
 }
 
-button:active{
-    transform:translateY(1px);
+/* ---------------------- */
+/* PLATEAU */
+/* ---------------------- */
+
+.game-board{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,140px);
+
+    justify-content:center;
+
+    gap:20px;
+
 }
 
-/* ==========================
-   CONFETTIS
-========================== */
+/* ---------------------- */
+/* CARTES */
+/* ---------------------- */
 
-.confetti{
+.card{
+
+    width:140px;
+
+    height:140px;
+
+    position:relative;
+
+    transform-style:preserve-3d;
+
+    transition:0.6s;
+
+    cursor:pointer;
+
+}
+
+.card.flip{
+
+    transform:rotateY(180deg);
+
+}
+
+.front,
+
+.back{
+
     position:absolute;
-    width:10px;
-    height:18px;
-    opacity:.9;
-    animation:confettiFall linear forwards;
-}
 
-@keyframes confettiFall{
-    from{
-        transform:translateY(-30px) rotate(0deg);
-    }
-    to{
-        transform:translateY(650px) rotate(720deg);
-    }
-}
-#instructions{
+    width:100%;
 
-    margin-top:15px;
-
-    padding:15px 20px;
-
-    background:rgba(255,255,255,0.65);
+    height:100%;
 
     border-radius:15px;
 
-    text-align:center;
+    display:flex;
 
-    font-size:1rem;
+    justify-content:center;
 
-    color:#05345d;
+    align-items:center;
 
-    box-shadow:0 5px 15px rgba(0,80,150,.15);
-
-    line-height:1.5;
+    backface-visibility:hidden;
 
 }
 
-#instructions strong{
+/* Face cachée */
 
-    color:#0077cc;
+.front{
+
+    background:#1565c0;
+
+    color:white;
+
+    font-size:45px;
+
+}
+
+/* Face visible */
+
+.back{
+
+    background:white;
+
+    border:3px solid #2196f3;
+
+    transform:rotateY(180deg);
+
+    flex-direction:column;
+
+    padding:10px;
+
+    text-align:center;
+
+}
+
+.back .emoji{
+
+    font-size:45px;
+
+    margin-bottom:8px;
+
+}
+
+.back .label{
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    color:#0d4b8c;
+
+}
+
+/* ---------------------- */
+/* FENÊTRE DE VICTOIRE */
+/* ---------------------- */
+
+.modal{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(0,0,0,.6);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.hidden{
+
+    display:none;
+
+}
+
+.modal-content{
+
+    background:white;
+
+    width:90%;
+
+    max-width:500px;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    animation:zoom .5s;
+
+}
+
+.modal-content h2{
+
+    color:#0d4b8c;
+
+    margin-bottom:20px;
+
+}
+
+.modal-content p{
+
+    margin-bottom:15px;
+
+    line-height:1.6;
+
+}
+
+@keyframes zoom{
+
+    from{
+
+        transform:scale(.5);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+/* ---------------------- */
+/* RESPONSIVE */
+/* ---------------------- */
+
+@media(max-width:700px){
+
+.game-board{
+
+grid-template-columns:repeat(3,110px);
+
+gap:15px;
+
+}
+
+.card{
+
+width:110px;
+
+height:110px;
+
+}
+
+.front{
+
+font-size:35px;
+
+}
+
+.back .emoji{
+
+font-size:35px;
+
+}
+
+.back .label{
+
+font-size:12px;
+
+}
+
+}
+
+@media(max-width:500px){
+
+.game-board{
+
+grid-template-columns:repeat(2,120px);
+
+}
 
 }

@@ -1,134 +1,104 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Les 50 ans de la Patinoire François-Le-Comte</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory - IMPULS-HÉRITAGE 2026</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-  <header>
+        <header>
+            <h1>🧠 Memory IMPULS-HÉRITAGE 2026</h1>
 
-    <h1>⛸️ Les 50 ans de la Patinoire François-Le-Comte</h1>
+            <p class="description">
+                Retrouvez toutes les paires afin de stimuler votre mémoire tout en découvrant
+                les principales thématiques du projet <strong>IMPULS-HÉRITAGE 2026</strong>,
+                un programme de coopération entre <strong>Grand Paris Sud</strong> et
+                <strong>Dakar</strong>.
+            </p>
+        </header>
 
-    <div id="score">
-      Flocons récupérés : <span id="currentScore">0</span> / 50
+        <section class="rules">
+
+            <h2>🎮 Comment jouer ?</h2>
+
+            <ul>
+                <li>Retournez deux cartes.</li>
+                <li>Si elles sont identiques, elles restent visibles.</li>
+                <li>Sinon, elles se retournent.</li>
+                <li>Trouvez les 6 paires pour gagner la partie.</li>
+            </ul>
+
+        </section>
+
+        <section class="infos">
+
+            <div class="info-box">
+                <h3>⏱ Temps</h3>
+                <span id="timer">00:00</span>
+            </div>
+
+            <div class="info-box">
+                <h3>🎯 Coups</h3>
+                <span id="moves">0</span>
+            </div>
+
+            <div class="info-box">
+                <button id="restartBtn">
+                    🔄 Rejouer
+                </button>
+            </div>
+
+        </section>
+
+        <!-- Plateau du jeu -->
+
+        <section id="gameBoard" class="game-board">
+
+            <!-- Les cartes seront créées automatiquement en JavaScript -->
+
+        </section>
+
     </div>
 
+    <!-- Fenêtre de victoire -->
 
-    <!-- Instructions du jeu -->
-    <div id="instructions">
+    <div id="victoryModal" class="modal hidden">
 
-      🎮 <strong>Comment jouer ?</strong>
+        <div class="modal-content">
 
-      <br><br>
+            <h2>🎉 Félicitations !</h2>
 
-      Utilisez les touches 
-      <strong>⬅️ &nbsp; ← &nbsp; et &nbsp; → &nbsp; ➡️</strong>
-      du clavier
+            <p>
+                Vous avez retrouvé toutes les paires !
+            </p>
 
-      <br>
+            <p>
+                Grâce à votre mémoire, vous avez reconstitué les principaux
+                éléments du projet <strong>IMPULS-HÉRITAGE 2026</strong>.
+            </p>
 
-      (ou les touches <strong>A</strong> et <strong>D</strong>)
+            <p>
+                Ce projet favorise la coopération entre
+                <strong>Grand Paris Sud</strong> et
+                <strong>Dakar</strong> autour du sport,
+                de la santé et de l'ouverture internationale.
+            </p>
 
-      <br><br>
-
-      ⛸️ Déplacez le patineur pour attraper les flocons ❄️
-
-      <br>
-
-      🎯 Votre objectif : récupérer les <strong>50 flocons</strong>
-      pour célébrer les <strong>50 ans de la Patinoire François-Le-Comte</strong> !
-
-    </div>
-
-
-  </header>
-
-
-  <main>
-
-    <div id="rink">
-
-
-      <!-- Reflets de la glace -->
-      <div class="ice-reflection"></div>
-
-
-      <!-- Joueur -->
-      <div id="player">⛸️</div>
-
-
-      <!-- Zone des flocons -->
-      <div id="snowContainer"></div>
-
-
-      <!-- Confettis -->
-      <div id="confettiContainer"></div>
-
-
-      <!-- Écran de victoire -->
-      <div id="victoryScreen" class="hidden">
-
-
-        <div class="victoryBox">
-
-
-          <h2>
-            🎉 Félicitations ! 🎉
-          </h2>
-
-
-          <p>
-
-            Bravo ! Vous avez récupéré les <strong>50 flocons</strong> ❄️
-
-            <br><br>
-
-            Vous avez célébré les 
-            <strong>50 ans de la Patinoire François-Le-Comte</strong> ! ⛸️
-
-            <br><br>
-
-            Une nouvelle partie vous attend.
-
-            <br>
-
-            Êtes-vous prêt à relever le défi une nouvelle fois ? 😃
-
-          </p>
-
-
-          <button id="restartBtn">
-
-            🔄 Refaire le jeu
-
-          </button>
-
+            <button id="playAgainBtn">
+                Rejouer
+            </button>
 
         </div>
 
-
-      </div>
-
-
     </div>
 
-
-  </main>
-
-
-</div>
-
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 
 </body>
-
 </html>

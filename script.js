@@ -1,267 +1,218 @@
-// ===========================
-// Configuration
-// ===========================
+const cardsData = [
+    { emoji: "🤝", text: "Coopération" },
+    { emoji: "🤝", text: "Coopération" },
 
-const rink = document.getElementById("rink");
-const player = document.getElementById("player");
-const snowContainer = document.getElementById("snowContainer");
-const confettiContainer = document.getElementById("confettiContainer");
+    { emoji: "🏙️", text: "Grand Paris Sud" },
+    { emoji: "🏙️", text: "Grand Paris Sud" },
 
-const scoreText = document.getElementById("currentScore");
+    { emoji: "🌍", text: "Ouverture internationale" },
+    { emoji: "🌍", text: "Ouverture internationale" },
 
-const victory = document.getElementById("victoryScreen");
+    { emoji: "🏃", text: "Sport-Santé" },
+    { emoji: "🏃", text: "Sport-Santé" },
 
+    { emoji: "🇸🇳", text: "Sénégal" },
+    { emoji: "🇸🇳", text: "Sénégal" },
+
+    { emoji: "🇫🇷", text: "France" },
+    { emoji: "🇫🇷", text: "France" }
+];
+
+const board = document.getElementById("gameBoard");
+const movesDisplay = document.getElementById("moves");
+const timerDisplay = document.getElementById("timer");
 const restartBtn = document.getElementById("restartBtn");
+const playAgainBtn = document.getElementById("playAgainBtn");
+const victoryModal = document.getElementById("victoryModal");
 
-const targetScore = 50;
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
 
-let score = 0;
+let moves = 0;
+let matchedPairs = 0;
 
-let playerX = rink.clientWidth / 2;
+let seconds = 0;
+let timer = null;
+let gameStarted = false;
 
-let spawnInterval;
+// Mélange des cartes
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
 
-let gameRunning = true;
+// Démarrer le chronomètre
+function startTimer() {
 
-const keys = {};
+    timer = setInterval(() => {
 
+        seconds++;
 
-// ===========================
-// Déplacement joueur
-// ===========================
+        const min = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const sec = String(seconds % 60).padStart(2, "0");
 
-document.addEventListener("keydown", e => {
+        timerDisplay.textContent = `${min}:${sec}`;
 
-    keys[e.key.toLowerCase()] = true;
-
-});
-
-document.addEventListener("keyup", e => {
-
-    keys[e.key.toLowerCase()] = false;
-
-});
-
-function movePlayer(){
-
-    if(!gameRunning) return;
-
-    const speed = 7;
-
-    if(keys["arrowleft"] || keys["a"]){
-
-        playerX -= speed;
-
-    }
-
-    if(keys["arrowright"] || keys["d"]){
-
-        playerX += speed;
-
-    }
-
-    const limit = rink.clientWidth - 60;
-
-    if(playerX < 20) playerX = 20;
-
-    if(playerX > limit) playerX = limit;
-
-    player.style.left = playerX + "px";
-
-    requestAnimationFrame(movePlayer);
+    }, 1000);
 
 }
 
+// Création des cartes
+function createBoard() {
 
-// ===========================
-// Création flocons
-// ===========================
+    board.innerHTML = "";
 
-function createSnowflake(){
+    const shuffled = shuffle([...cardsData]);
 
-    if(!gameRunning) return;
+    shuffled.forEach(item => {
 
-    const snow = document.createElement("div");
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-    snow.className = "snowflake";
+        card.dataset.emoji = item.emoji;
+        card.dataset.text = item.text;
 
-    snow.innerHTML = "❄️";
+        card.innerHTML = `
+            <div class="front">?</div>
 
-    const x = Math.random() * (rink.clientWidth - 30);
+            <div class="back">
+                <div class="emoji">${item.emoji}</div>
+                <div class="label">${item.text}</div>
+            </div>
+        `;
 
-    snow.style.left = x + "px";
+        card.addEventListener("click", flipCard);
 
-    const duration = 4 + Math.random()*2;
+        board.appendChild(card);
 
-    snow.style.animationDuration = duration+"s";
-
-    snowContainer.appendChild(snow);
-
-    let y = -40;
-
-    const speed = 2 + Math.random()*2;
-
-    const loop = setInterval(()=>{
-
-        if(!gameRunning){
-
-            clearInterval(loop);
-            return;
-        }
-
-        y += speed;
-
-        snow.style.top = y+"px";
-
-        const snowRect = snow.getBoundingClientRect();
-
-        const playerRect = player.getBoundingClientRect();
-
-        if(
-
-            snowRect.left < playerRect.right &&
-            snowRect.right > playerRect.left &&
-            snowRect.top < playerRect.bottom &&
-            snowRect.bottom > playerRect.top
-
-        ){
-
-            clearInterval(loop);
-
-            snow.remove();
-
-            collectSnow();
-
-            return;
-
-        }
-
-        if(y > rink.clientHeight){
-
-            clearInterval(loop);
-
-            snow.remove();
-
-        }
-
-    },16);
+    });
 
 }
 
+// Retourner une carte
+function flipCard() {
 
-// ===========================
-// Collecte
-// ===========================
+    if (lockBoard) return;
 
-function collectSnow(){
+    if (this === firstCard) return;
 
-    score++;
+    if (!gameStarted) {
 
-    scoreText.textContent = score;
+        gameStarted = true;
+        startTimer();
 
-    player.classList.add("collect");
+    }
 
-    setTimeout(()=>{
+    this.classList.add("flip");
 
-        player.classList.remove("collect");
+    if (!firstCard) {
 
-    },300);
+        firstCard = this;
+        return;
 
-    if(score >= targetScore){
+    }
 
-        winGame();
+    secondCard = this;
+
+    moves++;
+    movesDisplay.textContent = moves;
+
+    checkMatch();
+
+}
+
+// Vérifier si les cartes sont identiques
+function checkMatch() {
+
+    const isMatch =
+        firstCard.dataset.emoji === secondCard.dataset.emoji;
+
+    if (isMatch) {
+
+        disableCards();
+
+    } else {
+
+        unflipCards();
 
     }
 
 }
 
+// Si paire trouvée
+function disableCards() {
 
-// ===========================
-// Victoire
-// ===========================
+    firstCard.removeEventListener("click", flipCard);
+    secondCard.removeEventListener("click", flipCard);
 
-function winGame(){
+    matchedPairs++;
 
-    gameRunning = false;
+    resetBoard();
 
-    clearInterval(spawnInterval);
+    if (matchedPairs === 6) {
 
-    victory.classList.remove("hidden");
+        clearInterval(timer);
 
-    createConfetti();
+        setTimeout(() => {
 
-}
+            victoryModal.classList.remove("hidden");
 
-
-// ===========================
-// Confettis
-// ===========================
-
-function createConfetti(){
-
-    const colors=[
-        "#ffcc00",
-        "#ff4d6d",
-        "#00c853",
-        "#2196f3",
-        "#9c27b0",
-        "#ffffff"
-    ];
-
-    for(let i=0;i<180;i++){
-
-        const c=document.createElement("div");
-
-        c.className="confetti";
-
-        c.style.left=Math.random()*rink.clientWidth+"px";
-
-        c.style.background=colors[Math.floor(Math.random()*colors.length)];
-
-        c.style.animationDuration=(3+Math.random()*3)+"s";
-
-        c.style.animationDelay=(Math.random()*2)+"s";
-
-        confettiContainer.appendChild(c);
+        }, 500);
 
     }
 
 }
 
+// Si mauvaise paire
+function unflipCards() {
 
-// ===========================
-// Restart
-// ===========================
+    lockBoard = true;
 
-restartBtn.addEventListener("click",()=>{
+    setTimeout(() => {
 
-    score=0;
+        firstCard.classList.remove("flip");
+        secondCard.classList.remove("flip");
 
-    scoreText.textContent="0";
+        resetBoard();
 
-    gameRunning=true;
+    }, 1000);
 
-    playerX=rink.clientWidth/2;
+}
 
-    player.style.left=playerX+"px";
+// Réinitialiser les variables
+function resetBoard() {
 
-    victory.classList.add("hidden");
+    [firstCard, secondCard, lockBoard] = [null, null, false];
 
-    snowContainer.innerHTML="";
+}
 
-    confettiContainer.innerHTML="";
+// Recommencer la partie
+function restartGame() {
 
-    spawnInterval=setInterval(createSnowflake,650);
+    clearInterval(timer);
 
-    movePlayer();
+    seconds = 0;
+    timerDisplay.textContent = "00:00";
 
-});
+    moves = 0;
+    movesDisplay.textContent = "0";
 
+    matchedPairs = 0;
 
-// ===========================
-// Lancement
-// ===========================
+    firstCard = null;
+    secondCard = null;
 
-spawnInterval=setInterval(createSnowflake,650);
+    gameStarted = false;
 
-movePlayer();
+    victoryModal.classList.add("hidden");
+
+    createBoard();
+
+}
+
+restartBtn.addEventListener("click", restartGame);
+
+playAgainBtn.addEventListener("click", restartGame);
+
+// Lancer le jeu
+createBoard();
